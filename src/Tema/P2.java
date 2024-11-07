@@ -65,9 +65,10 @@ class Persoana {
     public void adaugaTaxe(Taxa t) {
         taxe.add(t);
     }
-    public void initierePlata(Primarie primarie){
-        for(Taxa t:taxe){
-            if(!t.isAchitat()){
+
+    public void initierePlata(Primarie primarie) {
+        for (Taxa t : taxe) {
+            if (!t.isAchitat()) {
                 primarie.platesteTaxa(t);
                 break;//oprim cautarea dupa ce am gasit si achitat prima taxa neachitata
             }
@@ -143,101 +144,112 @@ class TaxaImpozitVenit extends Taxa {
         return 0.3 * salariu;
     }
 }
-class Primarie{
+
+class Primarie {
     private static Primarie primarie;
-    List<Taxa>taxe;
+    List<Taxa> taxe;
 
     public Primarie() {
         this.taxe = new ArrayList<>();
     }
+
     //Metoda statica pentru a obtine instanta unica
-    public static Primarie getInstance(){
-        if(primarie==null){
-            primarie=new Primarie();
+    public static Primarie getInstance() {
+        if (primarie == null) {
+            primarie = new Primarie();
         }
         return primarie;
     }
-    public void addTaxa(Taxa t){
+
+    public void addTaxa(Taxa t) {
         taxe.add(t);
     }
+
     //platesteTaxa in primarie, intierePlata in Persoana
-    public void platesteTaxa(Taxa t){
+    public void platesteTaxa(Taxa t) {
         t.setAchitat(true);
     }
-    public List<Taxa> respectaConditia(Conditie c){
-        List<Taxa>taxeCond=new ArrayList<>();
-        for(Taxa t:taxe){
-            if(c.isCondRespectata(t)){
+
+    public List<Taxa> respectaConditia(Conditie c) {
+        List<Taxa> taxeCond = new ArrayList<>();
+        for (Taxa t : taxe) {
+            if (c.isCondRespectata(t)) {
                 taxeCond.add(t);
             }
         }
         return taxeCond;
     }
 }
-interface Conditie{
+
+interface Conditie {
     public abstract boolean isCondRespectata(Taxa t);
 }
-class TaxeAchitate implements Conditie{
+
+class TaxeAchitate implements Conditie {
     @Override
     public boolean isCondRespectata(Taxa t) {
-        if(t.isAchitat())
+        if (t.isAchitat())
             return true;
         else
             return false;
     }
 }
-class TaxeValPesteOMie implements Conditie{
+
+class TaxeValPesteOMie implements Conditie {
     @Override
     public boolean isCondRespectata(Taxa t) {
-        if(t.getValoare()>1000)
+        if (t.getValoare() > 1000)
             return true;
         else
             return false;
     }
 }
-class TaxeAchitateSiValPesteCinciSute implements Conditie{
+
+class TaxeAchitateSiValPesteCinciSute implements Conditie {
     @Override
     public boolean isCondRespectata(Taxa t) {
-        if(t.isAchitat()&&t.getValoare()>500)
+        if (t.isAchitat() && t.getValoare() > 500)
             return true;
         else
             return false;
     }
 }
-class TaxeNeachitateSiValPesteCinciMii implements Conditie{
+
+class TaxeNeachitateSiValPesteCinciMii implements Conditie {
     @Override
     public boolean isCondRespectata(Taxa t) {
-        if(!t.isAchitat()&&t.getValoare()>5000)
+        if (!t.isAchitat() && t.getValoare() > 5000)
             return true;
         else
             return false;
     }
 }
+
 public class P2 {
     public static void main(String[] args) {
-        Persoana p1=new Persoana("Tomesc Eliza", 21,"6030327204898",Gen.F);
-        Persoana p2=new Persoana("Onea Mihai",25,"1990327177379",Gen.M);
+        Persoana p1 = new Persoana("Tomesc Eliza", 21, "6030327204898", Gen.F);
+        Persoana p2 = new Persoana("Onea Mihai", 25, "1990327177379", Gen.M);
 
-        Primarie primarie=Primarie.getInstance();//instanta unica primarie
+        Primarie primarie = Primarie.getInstance();//instanta unica primarie
 
-        Taxa t1=new TaxaImpozitCasa(p1,100,FactorZonal.ZONA_3);
-        Taxa t2=new TaxaImpozitAuto(p1,"Dacia",1600,CoeficientEuro.COEF_4);
-        Taxa t3=new TaxaImpozitVenit(p2,3000);
+        Taxa t1 = new TaxaImpozitCasa(p1, 100, FactorZonal.ZONA_3);
+        Taxa t2 = new TaxaImpozitAuto(p1, "Dacia", 1600, CoeficientEuro.COEF_4);
+        Taxa t3 = new TaxaImpozitVenit(p2, 3000);
         Taxa taxaImpozitVenit = new TaxaImpozitVenit(p2, 20000);
 
         p1.initierePlata(primarie);
         p2.initierePlata(primarie);
 
-        List<Taxa>taxeAchitate=primarie.respectaConditia(new TaxeAchitate());
-        System.out.println("Numar taxe achitate: "+taxeAchitate.size());
+        List<Taxa> taxeAchitate = primarie.respectaConditia(new TaxeAchitate());
+        System.out.println("Numar taxe achitate: " + taxeAchitate.size());
 
-        List<Taxa>taxeValPesteOMie=primarie.respectaConditia(new TaxeValPesteOMie());
-        System.out.println("Numar taxe cu valoarea peste 1000: "+taxeValPesteOMie.size());
+        List<Taxa> taxeValPesteOMie = primarie.respectaConditia(new TaxeValPesteOMie());
+        System.out.println("Numar taxe cu valoarea peste 1000: " + taxeValPesteOMie.size());
 
-        List<Taxa>taxeAchitateSiValPesteCinciSute=primarie.respectaConditia(new TaxeAchitateSiValPesteCinciSute());
-        System.out.println("Numar taxe achitate si cu valoarea peste 500: "+taxeAchitateSiValPesteCinciSute.size());
+        List<Taxa> taxeAchitateSiValPesteCinciSute = primarie.respectaConditia(new TaxeAchitateSiValPesteCinciSute());
+        System.out.println("Numar taxe achitate si cu valoarea peste 500: " + taxeAchitateSiValPesteCinciSute.size());
 
-        List<Taxa>taxeNeachitateSiValPesteCinciMii=primarie.respectaConditia(new TaxeNeachitateSiValPesteCinciMii());
-        System.out.println("Numar taxe neachitate si cu valoarea peste 5000: "+taxeNeachitateSiValPesteCinciMii.size());
+        List<Taxa> taxeNeachitateSiValPesteCinciMii = primarie.respectaConditia(new TaxeNeachitateSiValPesteCinciMii());
+        System.out.println("Numar taxe neachitate si cu valoarea peste 5000: " + taxeNeachitateSiValPesteCinciMii.size());
     }
 }

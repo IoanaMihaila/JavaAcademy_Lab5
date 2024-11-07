@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-enum Combustibil{
+enum Combustibil {
     BENZINA(6.5),
     MOTORINA(5.8);
     private double pretPeLitru;
@@ -16,17 +16,18 @@ enum Combustibil{
     public double getPretPeLitru() {
         return pretPeLitru;
     }
-    public static Combustibil gasesteDupaPret(double pret){
-        for(Combustibil c:Combustibil.values()){
-            if(c.getPretPeLitru()==pret){
+
+    public static Combustibil gasesteDupaPret(double pret) {
+        for (Combustibil c : Combustibil.values()) {
+            if (c.getPretPeLitru() == pret) {
                 return c;
             }
         }
-        throw  new IllegalArgumentException("Nu exista un tip de combustibil cu pretul: "+pret);
+        throw new IllegalArgumentException("Nu exista un tip de combustibil cu pretul: " + pret);
     }
 }
 
-class Masina{
+class Masina {
     private String marca;
     private String model;
     private int caiPutere;
@@ -57,10 +58,10 @@ class Masina{
 }
 
 public class P1 {
-    public static List<Masina> combBenzina(List<Masina>masini){
-        List<Masina>masiniBenzina=new ArrayList<>();
-        for(Masina m:masini){
-            if(m.getCombustibil().equals(Combustibil.BENZINA)){
+    public static List<Masina> combBenzina(List<Masina> masini) {
+        List<Masina> masiniBenzina = new ArrayList<>();
+        for (Masina m : masini) {
+            if (m.getCombustibil().equals(Combustibil.BENZINA)) {
                 masiniBenzina.add(m);
             }
         }
@@ -68,21 +69,21 @@ public class P1 {
     }
 
     public static void main(String[] args) {
-        List<Masina>masini=new ArrayList<>();
-        masini.add(new Masina("Dacia","Logan",75,Combustibil.BENZINA));
-        masini.add(new Masina("BMW","X5",250,Combustibil.BENZINA));
-        masini.add(new Masina("Volkswagen","Passat",95,Combustibil.MOTORINA));
+        List<Masina> masini = new ArrayList<>();
+        masini.add(new Masina("Dacia", "Logan", 75, Combustibil.BENZINA));
+        masini.add(new Masina("BMW", "X5", 250, Combustibil.BENZINA));
+        masini.add(new Masina("Volkswagen", "Passat", 95, Combustibil.MOTORINA));
 
-        List<Masina>masiniBenzina= combBenzina(masini);
+        List<Masina> masiniBenzina = combBenzina(masini);
         System.out.println("Masinile care folosesc benzina: ");
-        for(Masina masina:masiniBenzina){
-            System.out.println(masina.getMarca()+ " "+masina.getModel());
+        for (Masina masina : masiniBenzina) {
+            System.out.println(masina.getMarca() + " " + masina.getModel());
         }
-        double pretCautat=6.5;
-        try{
-            Combustibil combustibil=Combustibil.gasesteDupaPret(pretCautat);
-            System.out.println("Combustibilul cu pretul: "+pretCautat+" este: "+combustibil);
-        }catch(IllegalArgumentException e){
+        double pretCautat = 6.5;
+        try {
+            Combustibil combustibil = Combustibil.gasesteDupaPret(pretCautat);
+            System.out.println("Combustibilul cu pretul: " + pretCautat + " este: " + combustibil);
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
     }
